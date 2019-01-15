@@ -20,7 +20,7 @@ type BenchmarkResult struct {
 	Instances    int           `bson:"instances,omitempty" json:"instances,omitempty" yaml:"instances,omitempty"`
 	ArtifactPath string        `bson:"path" json:"path" yaml:"path"`
 	StartAt      time.Time     `bson:"start_at" json:"start_at" yaml:"start_at"`
-	CompletedAt  time.Time     `bson:"compleated_at" json:"compleated_at" yaml:"compleated_at"`
+	CompletedAt  time.Time     `bson:"completed_at" json:"completed_at" yaml:"completed_at"`
 	Error        error         `bson:"-" json:"-" yaml:"-"`
 }
 
@@ -29,7 +29,7 @@ type BenchmarkResult struct {
 func (res *BenchmarkResult) Report() string {
 	out := []string{
 		"=== RUN", res.Name,
-		"    --- REPORT: " + fmt.Sprintf("count=%d, iters=%s, runtime=%s", res.Count, res.Iterations, roundDurationMS(res.Runtime)),
+		"    --- REPORT: " + fmt.Sprintf("count=%d, iters=%d, runtime=%s", res.Count, res.Iterations, roundDurationMS(res.Runtime)),
 	}
 
 	if res.Error != nil {
@@ -37,7 +37,7 @@ func (res *BenchmarkResult) Report() string {
 			fmt.Sprintf("    --- ERRORS: %s", res.Error.Error()),
 			fmt.Sprintf("--- FAIL: %s (%s)", res.Name, roundDurationMS(res.Runtime)))
 	} else {
-		out = append(out, fmt.Sprintf("--- PASS: %s", res.Name, roundDurationMS(res.Runtime)))
+		out = append(out, fmt.Sprintf("--- PASS: %s (%s)", res.Name, roundDurationMS(res.Runtime)))
 	}
 
 	return strings.Join(out, "\n")
