@@ -57,7 +57,7 @@ func (opts *UploadReportOptions) convertAndUploadArtifacts(ctx context.Context) 
 			job := NewUploadJob(a, opts.Report.BucketConf, opts.DryRun)
 			if opts.SerializeUpload {
 				job.Run(ctx)
-				if job.Error() != nil {
+				if err := job.Error() != nil {
 					return errors.Wrap(err, "problem converting and uploading artifacts")
 				}
 			} else if err := jobQueue.Put(ctx, job); err != nil {
